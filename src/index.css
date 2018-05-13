@@ -1,0 +1,9 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Slabo 27px', serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}

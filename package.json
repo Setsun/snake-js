@@ -1,0 +1,23 @@
+{
+  "name": "sq-snake-js",
+  "version": "1.0.0",
+  "description": "Snake in JS",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "snake",
+    "javascript"
+  ],
+  "author": "Setsun",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-setsun": "^1.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-setsun": "^1.0.0",
+    "parcel-bundler": "^1.8.1"
+  }
+}
