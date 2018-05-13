@@ -24,6 +24,14 @@ html, body {
 
 .cell {
   border: 1px solid black;
-  width: 12px;
-  height: 12px;
+  width: 24px;
+  height: 24px;
+}
+
+.cell.snake {
+  background-color: green;
+}
+
+.cell.apple {
+  background-color: red;
 }

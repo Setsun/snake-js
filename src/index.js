@@ -28,7 +28,7 @@ const initializeInterval = () => {
   }, 1000);
 };
 
-const render = (grid, snake) => {
+const render = (grid, snake, apple) => {
   const rootEl = document.getElementById('root');
   let gridEl = document.createElement('div');
   gridEl.classList.add('grid');
@@ -46,9 +46,23 @@ const render = (grid, snake) => {
     gridEl.appendChild(rowEl);
   }
 
+  for (let position of snake) {
+    const snakeCell = gridEl
+      .childNodes[position.x]
+      .childNodes[position.y];
+    snakeCell && snakeCell.classList.add('snake');
+  }
+
+  const appleCell = gridEl
+    .childNodes[apple.x]
+    .childNodes[apple.y];
+  appleCell && appleCell.classList.add('apple');
+
   rootEl && rootEl.appendChild(gridEl);
 };
 
-console.log('hello world');
+const grid = generateGrid(10);
+const snake = generateSnake({ x: 5, y: 5 });
+const apple = generateApple({ x: 5, y: 9 });
 
-render(generateGrid(10));
+render(grid, snake, apple);
