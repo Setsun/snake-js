@@ -1,22 +1,10 @@
 // @flow
 
+import Grid from './Grid';
+
 type Position = {
   x: number,
   y: number,
-};
-
-const generateGrid = (size: number): Array<Array<Position>> => {
-  return new Array(size).fill(
-    new Array(size).fill(0),
-  );
-};
-
-const generateSnake = (position: Position): Array<Position> => {
-  return [position];
-};
-
-const generateApple = (position: Position): Position => {
-  return position;
 };
 
 const initializeKeyEvents = () => {
@@ -61,8 +49,5 @@ const render = (grid, snake, apple) => {
   rootEl && rootEl.appendChild(gridEl);
 };
 
-const grid = generateGrid(10);
-const snake = generateSnake({ x: 5, y: 5 });
-const apple = generateApple({ x: 5, y: 9 });
-
-render(grid, snake, apple);
+const grid = new Grid(10);
+grid.render();
