@@ -1,32 +1,25 @@
-const generateGrid = () => {
+// @flow
 
+type Position = {
+  x: number,
+  y: number,
 };
 
-const generateSnake = () => {
-
+const generateGrid = (size: number): Array<Array<Position>> => {
+  return new Array(size).fill(
+    new Array(size).fill(0),
+  );
 };
 
-const generateApple = () => {
+const generateSnake = (position: Position): Array<Position> => {
+  return [position];
+};
 
+const generateApple = (position: Position): Position => {
+  return position;
 };
 
 const initializeKeyEvents = () => {
-  document.addEventListener('keydown', (event) => {
-    switch(event.key) {
-      case 37: {
-
-      }
-      case 38: {
-
-      }
-      case 39: {
-
-      }
-      case 40: {
-
-      }
-    }
-  });
 };
 
 const initializeInterval = () => {
