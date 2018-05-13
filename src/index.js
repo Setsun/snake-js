@@ -16,7 +16,7 @@ const onStop = () => {
   loseMenuEl.classList.remove('hide');
 };
 
-const engine = new GameEngine(16, rootEl, onStart, onStop);
+const engine = new GameEngine(32, rootEl, onStart, onStop);
 
 startBtn && startBtn.addEventListener('click', () => {
   engine.start();
