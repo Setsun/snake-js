@@ -1,10 +1,7 @@
 // @flow
 
-import Grid from './Grid';
+import GameEngine from './GameEngine';
 
-const initializeKeyEvents = () => {
-};
+const engine = new GameEngine(10);
 
-const grid = new Grid(10);
-
-grid.start();
+engine.start();

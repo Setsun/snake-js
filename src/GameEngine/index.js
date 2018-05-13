@@ -1,6 +1,7 @@
 // @flow
 
 import Snake from '../Snake';
+import { ActionTypes } from '../utils/constants';
 
 type Position = {
   x: number,
@@ -19,7 +20,7 @@ const CELL_TYPES = {
 
 type CellType = 'apple' | 'snake' | 'empty';
 
-class Grid {
+class GameEngine {
   // size: number;
   // grid: Array<Array<CellType>>;
   // snake: typeof Snake;
@@ -46,32 +47,31 @@ class Grid {
     });
   }
 
-  isOutOfBounds(nextHead) {
-    return (nextHead.x < 0 || nextHead.x > this.size - 1 || nextHead.y < 0 || nextHead.y > this.size - 1);
+  isOutOfBounds(head) {
+    return (head.x < 0 || head.x > this.size - 1 || head.y < 0 || head.y > this.size - 1);
   }
 
-  hasEatenApple(nextHead) {
-    return (nextHead.x === this.apple.x && nextHead.y === this.apple.y);
+  hasEatenApple(head) {
+    return (head.x === this.apple.x && head.y === this.apple.y);
   }
 
   initializeUpdateInterval() {
     this.updateInterval = setInterval(() => {
-      const [ head ] = this.snake.body;
-      const nextHead = { x: head.x + 1, y: head.y };
+      this.snake.move(ActionTypes.UP);
 
-      if (this.isOutOfBounds(nextHead)) {
+      const [ head ] = this.snake.body;
+
+      if (this.isOutOfBounds(head)) {
         clearInterval(this.updateInterval);
         console.log('you lose');
       }
 
-      if (this.hasEatenApple(nextHead)) {
+      if (this.hasEatenApple(head)) {
         this.apple = generateApple({
           x: Math.floor(Math.random() * this.size),
           y: Math.floor(Math.random() * this.size),
         });
       }
-
-      this.snake.body[0] = nextHead;
 
       this.render();
     }, 500);
@@ -132,4 +132,4 @@ class Grid {
   }
 }
 
-export default Grid;
+export default GameEngine;
