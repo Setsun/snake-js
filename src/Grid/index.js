@@ -22,9 +22,20 @@ class Grid {
     });
   }
 
+  initializeUpdateInterval() {
+    setInterval(() => {
+      const [ head ] = this.snake;
+      const nextPosition = { x: head.x + 1, y: head.y };
+      this.snake[0] = nextPosition;
+      this.render();
+    }, 500);
+  }
+
   render() {
     const rootEl = document.getElementById('root');
-    let gridEl = document.createElement('div');
+    rootEl.innerHTML = '';
+
+    const gridEl = document.createElement('div');
     gridEl.classList.add('grid');
 
     for (let row of this.grid) {
@@ -53,6 +64,11 @@ class Grid {
     appleCell && appleCell.classList.add('apple');
 
     rootEl && rootEl.appendChild(gridEl);
+  }
+
+  start() {
+    this.render();
+    this.initializeUpdateInterval();
   }
 }
 
