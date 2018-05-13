@@ -6,12 +6,41 @@
 html, body {
   height: 100%;
   margin: 0;
+  position: relative;
 }
 
 #root {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.start-menu, .lose-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s opacity ease-in-out;
+}
+
+.hide {
+  opacity: 0;
+}
+
+.btn {
+  font-family: 'Slabo 27px', serif;
+  background-color: white;
+  border: 1px solid black;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
 }
 
 .grid {

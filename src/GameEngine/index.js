@@ -24,10 +24,14 @@ class GameEngine {
   rootEl: Node;
   eventListener: EventListener;
   updateInterval: any;
+  onStart: Function;
+  onStop: Function;
 
-  constructor(size: number, rootEl: HTMLElement) {
+  constructor(size: number, rootEl: HTMLElement, onStart: Function, onStop: Function) {
     this.size = size;
     this.rootEl = rootEl;
+    this.onStart = onStart;
+    this.onStop = onStop;
   }
 
   init() {
@@ -46,6 +50,8 @@ class GameEngine {
     );
 
     this.gridEl = this.createGrid();
+
+    this.rootEl.innerHTML = '';
     this.rootEl.appendChild(this.gridEl);
   }
 
@@ -71,6 +77,7 @@ class GameEngine {
 
       if (this.isOutOfBounds(head)) {
         this.stop();
+        this.onStop();
         return;
       }
 
@@ -135,6 +142,7 @@ class GameEngine {
   }
 
   start() {
+    this.onStart();
     this.init();
     this.render();
     this.initializeKeyboardEvents();
