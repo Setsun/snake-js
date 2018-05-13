@@ -1,12 +1,7 @@
 // @flow
 
 import Snake from '../Snake';
-import { ActionTypes } from '../utils/constants';
-
-type Position = {
-  x: number,
-  y: number,
-};
+import type { ActionType, Position } from '../types';
 
 const generateApple = (position: Position): Position => {
   return position;
@@ -21,49 +16,62 @@ const CELL_TYPES = {
 type CellType = 'apple' | 'snake' | 'empty';
 
 class GameEngine {
-  // size: number;
-  // grid: Array<Array<CellType>>;
-  // snake: typeof Snake;
-  // apple: Position;
+  size: number;
+  snake: Object;
+  apple: Position;
+  grid: Array<Array<CellType>>;
+  gridEl: Node;
+  rootEl: Node;
+  eventListener: EventListener;
+  updateInterval: any;
 
-  constructor(size: number) {
+  constructor(size: number, rootEl: HTMLElement) {
     this.size = size;
-    this.grid = new Array(size).fill(
-      new Array(size).fill(CELL_TYPES.EMPTY),
-    );
-    this.gridEl = this.createGrid();
-    document.getElementById('root').appendChild(this.gridEl);
-
-    this.snake = new Snake({
-      x: Math.floor(size / 2),
-      y: Math.floor(size / 2),
-    });
-    this.apple = generateApple({
-      // x: Math.floor(size / 2) + 2,
-      // y: Math.floor(size / 2),
-
-      x: Math.floor(Math.random() * size),
-      y: Math.floor(Math.random() * size),
-    });
+    this.rootEl = rootEl;
   }
 
-  isOutOfBounds(head) {
+  init() {
+    this.snake = new Snake({
+      x: Math.floor(this.size / 2),
+      y: Math.floor(this.size / 2),
+    });
+
+    this.apple = generateApple({
+      x: Math.floor(Math.random() * this.size),
+      y: Math.floor(Math.random() * this.size),
+    });
+
+    this.grid = new Array(this.size).fill(
+      new Array(this.size).fill(CELL_TYPES.EMPTY),
+    );
+
+    this.gridEl = this.createGrid();
+    this.rootEl.appendChild(this.gridEl);
+  }
+
+  isOutOfBounds(head: Position) {
     return (head.x < 0 || head.x > this.size - 1 || head.y < 0 || head.y > this.size - 1);
   }
 
-  hasEatenApple(head) {
+  hasEatenApple(head: Position) {
     return (head.x === this.apple.x && head.y === this.apple.y);
+  }
+
+  initializeKeyboardEvents() {
+    this.eventListener = document.addEventListener('keydown', (event: Event) => {
+      this.snake.setCurrentAction(event.key);
+    });
   }
 
   initializeUpdateInterval() {
     this.updateInterval = setInterval(() => {
-      this.snake.move(ActionTypes.UP);
+      this.snake.move();
 
       const [ head ] = this.snake.body;
 
       if (this.isOutOfBounds(head)) {
-        clearInterval(this.updateInterval);
-        console.log('you lose');
+        this.stop();
+        return;
       }
 
       if (this.hasEatenApple(head)) {
@@ -71,10 +79,11 @@ class GameEngine {
           x: Math.floor(Math.random() * this.size),
           y: Math.floor(Math.random() * this.size),
         });
+        this.snake.addBodyCell();
       }
 
       this.render();
-    }, 500);
+    }, 100);
   }
 
   createGrid() {
@@ -98,20 +107,14 @@ class GameEngine {
   }
 
   render() {
-    this.gridEl.innerHTML = '';
+    const currentAppleCell = document.querySelector('.apple');
+    const currentSnakeCells = document.querySelectorAll('.cell.snake');
 
-    for (let row of this.grid) {
-      let rowEl = document.createElement('div');
-      rowEl.classList.add('row');
-
-      for (let position of row) {
-        let cellEl = document.createElement('div');
-        cellEl.classList.add('cell');
-        rowEl.appendChild(cellEl);
-      }
-
-      this.gridEl.appendChild(rowEl);
+    for (let snakeCell of currentSnakeCells) {
+      snakeCell.classList.remove('snake');
     }
+
+    currentAppleCell && currentAppleCell.classList.remove('apple');
 
     for (let position of this.snake.body) {
       const snakeCell = this.gridEl
@@ -126,8 +129,15 @@ class GameEngine {
     appleCell && appleCell.classList.add('apple');
   }
 
+  stop() {
+    document.removeEventListener('keydown', this.eventListener);
+    clearInterval(this.updateInterval);
+  }
+
   start() {
+    this.init();
     this.render();
+    this.initializeKeyboardEvents();
     this.initializeUpdateInterval();
   }
 }

@@ -1,3 +1,4 @@
 {
-  "presets": ["setsun"]
+  "presets": ["setsun"],
+  "plugins": ["transform-class-properties"]
 }
