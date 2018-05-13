@@ -2,11 +2,6 @@
 
 import Grid from './Grid';
 
-type Position = {
-  x: number,
-  y: number,
-};
-
 const initializeKeyEvents = () => {
 };
 
